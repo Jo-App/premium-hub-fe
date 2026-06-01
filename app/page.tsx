@@ -7,8 +7,12 @@ import FloorPlanSection from "@/components/FloorPlanSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import FloatingCTA from "@/components/FloatingCTA";
+import PopupModal from "@/components/PopupModal";
+import { getActivePopups } from "@/app/lib/api";
 
-export default function Home() {
+export default async function Home() {
+  const popups = await getActivePopups().catch(() => []);
+
   return (
     <>
       <Header />
@@ -22,6 +26,7 @@ export default function Home() {
       </main>
       <Footer />
       <FloatingCTA />
+      <PopupModal popups={popups} />
       <div className="md:hidden h-14" />
     </>
   );

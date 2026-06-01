@@ -1,7 +1,11 @@
-const quickLinks = ["분양안내", "단지안내", "평면안내", "오시는길"];
-const infoLinks = ["이용약관", "개인정보처리방침", "분양정보"];
+import { getContactConfig, getSiteMenus } from "@/app/lib/api";
 
-export default function Footer() {
+export default async function Footer() {
+  const [config, menus] = await Promise.all([
+    getContactConfig(),
+    getSiteMenus().catch(() => []),
+  ]);
+
   return (
     <footer className="bg-gray-900 text-white/60 text-xs py-10">
       <div className="max-w-6xl mx-auto px-6">
@@ -29,19 +33,27 @@ export default function Footer() {
               <br />
               주소: 부산광역시 수영구 일원
               <br />
-              대표전화: 1588-0000 | 이메일: info@busanprivate.kr
+              대표전화: <a href={`tel:${config.main_phone}`} className="hover:text-white transition-colors">{config.main_phone}</a>
+              {config.agent_phone && (
+                <> | 담당자: <a href={`tel:${config.agent_phone}`} className="hover:text-white transition-colors">{config.agent_phone}</a></>
+              )}
             </p>
+            {config.notice && (
+              <p className="mt-3 text-white/30 leading-relaxed whitespace-pre-line">{config.notice}</p>
+            )}
           </div>
 
-          {/* Links */}
-          <div className="flex flex-col gap-1">
-            <p className="text-white/80 font-medium mb-2">바로가기</p>
-            {quickLinks.map((l) => (
-              <a key={l} href="#" className="hover:text-white transition-colors">
-                {l}
-              </a>
-            ))}
-          </div>
+          {/* Nav links */}
+          {menus.length > 0 && (
+            <div className="flex flex-col gap-1">
+              <p className="text-white/80 font-medium mb-2">바로가기</p>
+              {menus.map((m) => (
+                <a key={m.id} href={m.link_url} className="hover:text-white transition-colors">
+                  {m.name}
+                </a>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
@@ -49,10 +61,8 @@ export default function Footer() {
             © 2026 Busan Private Rentals. All rights reserved.
           </p>
           <div className="flex gap-4">
-            {infoLinks.map((l) => (
-              <a key={l} href="#" className="hover:text-white transition-colors">
-                {l}
-              </a>
+            {["이용약관", "개인정보처리방침", "분양정보"].map((l) => (
+              <a key={l} href="#" className="hover:text-white transition-colors">{l}</a>
             ))}
           </div>
         </div>
