@@ -7,7 +7,7 @@ const slides = [
     bg: "from-slate-900/70 via-slate-800/60 to-slate-900/70",
     heading: (
       <>
-        부산의 중심에서 누리는
+        부산의 중심에서 
         <br />
         고품격 민간임대 라이프
       </>
