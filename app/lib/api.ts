@@ -92,6 +92,62 @@ export async function getContactConfig(): Promise<ContactConfig> {
   }
 }
 
+// ── Home Content ────────────────────────────────────────────────
+export interface HeroSlide {
+  id: number;
+  heading: string;
+  sub_text: string | null;
+  image_file: string | null;
+  sort_order: number;
+  is_active: boolean;
+}
+
+export interface HomeFeature {
+  id: number;
+  icon_key: string;
+  title: string;
+  description: string | null;
+  sort_order: number;
+}
+
+export interface ProjectStat {
+  id: number;
+  label: string;
+  value: string;
+  unit: string | null;
+  sort_order: number;
+}
+
+export interface ProjectRow {
+  id: number;
+  label: string;
+  value: string;
+  sort_order: number;
+}
+
+export interface LocationCategory {
+  id: number;
+  label: string;
+  items: string[];
+  sort_order: number;
+  is_active: boolean;
+}
+
+export interface HomeSettings {
+  map_image_file: string | null;
+  hero_badge_text: string | null;
+  hero_notice_text: string | null;
+  location_title: string | null;
+  location_desc: string | null;
+}
+
+export const getHeroSlides = () => get<HeroSlide[]>("/api/v1/home/public/hero-slides");
+export const getHomeFeatures = () => get<HomeFeature[]>("/api/v1/home/public/home-features");
+export const getProjectStats = () => get<ProjectStat[]>("/api/v1/home/public/project-stats");
+export const getProjectRows = () => get<ProjectRow[]>("/api/v1/home/public/project-rows");
+export const getLocationCategories = () => get<LocationCategory[]>("/api/v1/home/public/location-categories");
+export const getHomeSettings = () => get<HomeSettings>("/api/v1/home/public/home-settings");
+
 // ── Consultation Submit ─────────────────────────────────────────
 export interface ConsultationSubmitBody {
   name: string;
