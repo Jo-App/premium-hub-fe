@@ -34,6 +34,7 @@ export default function HeroClient({
       {/* 배경 */}
       <div className={`absolute inset-0 bg-gradient-to-br ${bg} bg-slate-800 transition-all duration-700`}>
         {slide.image_file ? (
+          // eslint-disable-next-line @next/next/no-img-element
           <img src={`${API}${slide.image_file}`} alt="히어로 배경" className="absolute inset-0 w-full h-full object-cover opacity-60" />
         ) : (
           <div className="absolute inset-0 bg-[url('/images/hero-bg.jpg')] bg-cover bg-center opacity-60" />

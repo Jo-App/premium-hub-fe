@@ -29,7 +29,7 @@ export interface SiteMenu {
 }
 
 export function getSiteMenus(): Promise<SiteMenu[]> {
-  return get<SiteMenu[]>("/api/v1/site-menus/public");
+  return get<SiteMenu[]>("/v1/site-menus/public");
 }
 
 // ── Popup ───────────────────────────────────────────────────────
@@ -46,7 +46,7 @@ export interface Popup {
 }
 
 export function getActivePopups(): Promise<Popup[]> {
-  return get<Popup[]>("/api/v1/popups/public");
+  return get<Popup[]>("/v1/popups/public");
 }
 
 // ── FloorPlan ───────────────────────────────────────────────────
@@ -70,7 +70,7 @@ export interface FloorPlan {
 }
 
 export function getFloorPlans(): Promise<FloorPlan[]> {
-  return get<FloorPlan[]>("/api/v1/floorplans/public");
+  return get<FloorPlan[]>("/v1/floorplans/public");
 }
 
 // ── ContactConfig ───────────────────────────────────────────────
@@ -85,7 +85,7 @@ export interface ContactConfig {
 // 환경변수 폴백을 사용합니다.
 export async function getContactConfig(): Promise<ContactConfig> {
   try {
-    return await get<ContactConfig>("/api/v1/contact-config/public");
+    return await get<ContactConfig>("/v1/contact-config/public");
   } catch {
     // API 오류 시 기본값 폴백
     return { main_phone: "1600-0000", agent_phone: null, business_summary: null, notice: null };
@@ -141,12 +141,12 @@ export interface HomeSettings {
   location_desc: string | null;
 }
 
-export const getHeroSlides = () => get<HeroSlide[]>("/api/v1/home/public/hero-slides");
-export const getHomeFeatures = () => get<HomeFeature[]>("/api/v1/home/public/home-features");
-export const getProjectStats = () => get<ProjectStat[]>("/api/v1/home/public/project-stats");
-export const getProjectRows = () => get<ProjectRow[]>("/api/v1/home/public/project-rows");
-export const getLocationCategories = () => get<LocationCategory[]>("/api/v1/home/public/location-categories");
-export const getHomeSettings = () => get<HomeSettings>("/api/v1/home/public/home-settings");
+export const getHeroSlides = () => get<HeroSlide[]>("/v1/home/public/hero-slides");
+export const getHomeFeatures = () => get<HomeFeature[]>("/v1/home/public/home-features");
+export const getProjectStats = () => get<ProjectStat[]>("/v1/home/public/project-stats");
+export const getProjectRows = () => get<ProjectRow[]>("/v1/home/public/project-rows");
+export const getLocationCategories = () => get<LocationCategory[]>("/v1/home/public/location-categories");
+export const getHomeSettings = () => get<HomeSettings>("/v1/home/public/home-settings");
 
 // ── Consultation Submit ─────────────────────────────────────────
 export interface ConsultationSubmitBody {
@@ -157,5 +157,5 @@ export interface ConsultationSubmitBody {
 }
 
 export function submitConsultation(body: ConsultationSubmitBody) {
-  return post<{ id: number }>("/api/v1/consultations/submit", body);
+  return post<{ id: number }>("/v1/consultations/submit", body);
 }

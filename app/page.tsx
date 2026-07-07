@@ -10,6 +10,10 @@ import FloatingCTA from "@/components/FloatingCTA";
 import PopupModal from "@/components/PopupModal";
 import { getActivePopups } from "@/app/lib/api";
 
+// 빌드 시점에 백엔드로 프리렌더(SSG)하지 않고 요청 시점에 렌더링한다.
+// 백엔드(NEXT_PUBLIC_API_URL)가 Vercel 빌드 서버에서 도달 불가여도 빌드가 실패하지 않도록.
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const popups = await getActivePopups().catch(() => []);
 
