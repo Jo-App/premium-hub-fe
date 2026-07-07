@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import type { Popup } from "@/app/lib/api";
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? "";
@@ -16,30 +16,35 @@ function dismiss(id: number) {
   localStorage.setItem(DISMISS_KEY, JSON.stringify([...new Set([...prev, id])]));
 }
 
+// 하이드레이션 완료 여부. 서버와 첫 클라이언트 렌더에서는 false라
+// localStorage 의존 UI를 그리지 않아 hydration mismatch가 없다.
+// (effect에서 setState 하는 대신 useSyncExternalStore로 대체 — react-hooks/set-state-in-effect)
+const noopSubscribe = () => () => {};
+function useHydrated() {
+  return useSyncExternalStore(noopSubscribe, () => true, () => false);
+}
+
 export default function PopupModal({ popups }: { popups: Popup[] }) {
-  const [visible, setVisible] = useState<Popup[]>([]);
-  const [current, setCurrent] = useState(0);
+  const hydrated = useHydrated();
+  // 이번 세션에서 닫은 팝업 id (localStorage 영구 저장과 별개)
+  const [closedIds, setClosedIds] = useState<number[]>([]);
 
-  useEffect(() => {
-    const dismissed = getDismissed();
-    const show = popups.filter(
-      (p) => p.status === "active" && !dismissed.includes(p.id)
-    );
-    setVisible(show);
-  }, [popups]);
+  if (!hydrated) return null;
 
-  if (visible.length === 0) return null;
+  const dismissed = getDismissed();
+  const active = popups.filter(
+    (p) => p.status === "active" && !dismissed.includes(p.id)
+  );
+  const remaining = active.filter((p) => !closedIds.includes(p.id));
+  if (remaining.length === 0) return null;
 
-  const popup = visible[current];
-  if (!popup) return null;
+  const popup = remaining[0];
+  const total = active.length;
+  const position = total - remaining.length + 1;
 
   function close(todayOnly = false) {
     if (todayOnly) dismiss(popup.id);
-    if (current < visible.length - 1) {
-      setCurrent((c) => c + 1);
-    } else {
-      setVisible([]);
-    }
+    setClosedIds((prev) => [...prev, popup.id]);
   }
 
   return (
@@ -59,8 +64,8 @@ export default function PopupModal({ popups }: { popups: Popup[] }) {
         {/* 내용 */}
         <div className="p-5">
           <h3 className="font-bold text-[var(--foreground)] text-base mb-1">{popup.title}</h3>
-          {visible.length > 1 && (
-            <p className="text-xs text-gray-400 mb-3">{current + 1} / {visible.length}</p>
+          {total > 1 && (
+            <p className="text-xs text-gray-400 mb-3">{position} / {total}</p>
           )}
 
           {popup.link_url && (
