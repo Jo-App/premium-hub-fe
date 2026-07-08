@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { FloorPlan } from "@/app/lib/api";
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? "";
+const API = process.env.NEXT_PUBLIC_API_URL;
 
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (

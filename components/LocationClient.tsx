@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { LocationCategory, HomeSettings } from "@/app/lib/api";
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? "";
+const API = process.env.NEXT_PUBLIC_API_URL;
 
 export default function LocationClient({
   categories, settings,

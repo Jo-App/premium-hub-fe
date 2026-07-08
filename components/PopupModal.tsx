@@ -3,7 +3,7 @@
 import { useState, useSyncExternalStore } from "react";
 import type { Popup } from "@/app/lib/api";
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? "";
+const API = process.env.NEXT_PUBLIC_API_URL;
 const DISMISS_KEY = "dismissed_popups";
 
 function getDismissed(): number[] {

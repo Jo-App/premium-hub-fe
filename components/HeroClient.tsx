@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { HeroSlide, HomeSettings } from "@/app/lib/api";
 
-const API = process.env.NEXT_PUBLIC_API_URL ?? "";
+const API = process.env.NEXT_PUBLIC_API_URL;
 
 const BG_GRADIENTS = [
   "from-slate-900/70 via-slate-800/60 to-slate-900/70",
